@@ -1,7 +1,7 @@
 const { entity, field } = require('@herbsjs/herbs');
 const { herbarium } = require('@herbsjs/herbarium');
 
-const LoginRequest = entity('LoginRequest', {
+const Loginrequest = entity('Loginrequest', {
   email: field(String, {
     validation: { email: true, presence: true }
   }),
@@ -10,4 +10,4 @@ const LoginRequest = entity('LoginRequest', {
   })
 });
 
-module.exports = herbarium.entities.add(LoginRequest, 'LoginRequest').entity;
+module.exports = herbarium.entities.add(Loginrequest, 'Loginrequest').entity;

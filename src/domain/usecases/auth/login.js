@@ -2,7 +2,7 @@ const {
   usecase, step, Ok, Err, ifElse, request
 } = require('@herbsjs/herbs');
 const { herbarium } = require('@herbsjs/herbarium');
-const LoginRequest = require('../../entities/loginRequest');
+const loginRequest = require('../../entities/loginRequest');
 const UserRepository = require('../../../infra/data/repositories/userRepository');
 const { EncryptDecrypt } = require('../../helpers/EncryptDecrypt');
 const { JWT } = require('../../helpers/JWT');
@@ -16,7 +16,7 @@ const dependency = {
 };
 
 const login = (injection) => usecase('Autenticate a user', {
-  request: request.from(LoginRequest, { ignoreIDs: true }),
+  request: request.from(loginRequest, { ignoreIDs: true }),
 
   response: { token: String },
 
@@ -28,12 +28,12 @@ const login = (injection) => usecase('Autenticate a user', {
   },
 
   'Verify input': step((ctx) => {
-    ctx.data.login = LoginRequest.fromJSON(ctx.req);
+    ctx.data.login = loginRequest.fromJSON(ctx.req);
 
     if (!ctx.data.login.isValid()) {
       return Err.invalidEntity({
         message: 'The login is invalid',
-        payload: { entity: 'LoginRequest' },
+        payload: { entity: 'loginRequest' },
         cause: ctx.user.errors
       });
     }
@@ -93,6 +93,6 @@ const login = (injection) => usecase('Autenticate a user', {
 module.exports = herbarium.usecases
   .add(login, 'Login')
   .metadata({
-    group: 'Auth', entity: LoginRequest, operation: herbarium.crud.other, REST: { post: '/auth/signin' }
+    group: 'Auth', entity: loginRequest, operation: herbarium.crud.other, REST: { post: '/auth/signin' }
   })
   .usecase;

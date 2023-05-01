@@ -1,4 +1,6 @@
-const { usecase, step, Ok } = require('@herbsjs/herbs');
+const {
+  usecase, step, Ok, Err
+} = require('@herbsjs/herbs');
 const { herbarium } = require('@herbsjs/herbarium');
 const Account = require('../../entities/account');
 const AccountRepository = require('../../../infra/data/repositories/accountRepository');
@@ -16,7 +18,7 @@ const findAllAccount = (injection) => usecase('Find all Accounts', {
   response: [Account],
 
   // Authorization with Audit
-  authorize: () => Ok(),
+  authorize: (user) => (user.id ? Ok() : Err()),
 
   setup: (ctx) => (ctx.di = Object.assign({}, dependency, injection)),
 
@@ -28,7 +30,7 @@ const findAllAccount = (injection) => usecase('Find all Accounts', {
         user_id: user.id
       }
     });
-      // ctx.ret is the return value of a use case
+
     return Ok(ctx.ret = accounts);
   })
 });

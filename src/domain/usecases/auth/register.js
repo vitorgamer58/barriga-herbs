@@ -3,19 +3,19 @@ const {
 } = require('@herbsjs/herbs');
 const { herbarium } = require('@herbsjs/herbarium');
 const User = require('../../entities/user');
-const RegisterRequest = require('../../entities/registerRequest');
+const Registerrequest = require('../../entities/registerRequest');
 const UserRepository = require('../../../infra/data/repositories/userRepository');
 const { EncryptDecrypt } = require('../../helpers/EncryptDecrypt');
 const createUser = require('../user/createUser');
 
 const dependency = {
   UserRepository,
-  encryptDecrypt: new EncryptDecrypt(),
+  encryptDecrypt: EncryptDecrypt,
   createUserUsecase: createUser()
 };
 
 const register = (injection) => usecase('Register a user', {
-  request: request.from(RegisterRequest, { ignoreIDs: true }),
+  request: request.from(Registerrequest, { ignoreIDs: true }),
 
   response: User,
 
@@ -27,7 +27,7 @@ const register = (injection) => usecase('Register a user', {
   },
 
   'Check if the User is valid': step((ctx) => {
-    ctx.data.userToRegister = RegisterRequest.fromJSON(ctx.req);
+    ctx.data.userToRegister = Registerrequest.fromJSON(ctx.req);
 
     if (!ctx.data.userToRegister.isValid()) {
       return Err.invalidEntity({
@@ -41,10 +41,10 @@ const register = (injection) => usecase('Register a user', {
   }),
 
   'Encrypt user password': step((ctx) => {
-    const user = ctx.data.register;
+    const { userToRegister } = ctx.data;
     const { encryptDecrypt } = ctx.di;
 
-    user.passwd = encryptDecrypt.getPasswdHash(user.passwd);
+    userToRegister.passwd = encryptDecrypt.getPasswdHash(userToRegister.passwd);
 
     return Ok();
   }),
@@ -71,6 +71,6 @@ const register = (injection) => usecase('Register a user', {
 module.exports = herbarium.usecases.add(register, 'Register a User').metadata({
   group: 'Auth',
   operation: herbarium.crud.create,
-  entity: RegisterRequest,
+  entity: Registerrequest,
   REST: { post: '/auth/signup' }
 }).usecase;

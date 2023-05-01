@@ -6,7 +6,7 @@ exports.up = async function (knex) {
         .createTable('users', (table) => {
           table.string('id').primary();
           table.string('name');
-          table.string('email');
+          table.string('email').unique();
           table.string('passwd');
           table.timestamps();
         });

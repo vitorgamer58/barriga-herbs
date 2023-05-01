@@ -1,9 +1,9 @@
 const user = {
-  canCreateUser: true, 
-  canFindOneUser: true, 
+  canCreateUser: true,
+  canFindOneUser: true,
   canDeleteUser: false,
-  canGetListUser: true, 
+  canGetListUser: true,
   canUpdateUser: true
-}
+};
 
-module.exports = user
+module.exports = user;

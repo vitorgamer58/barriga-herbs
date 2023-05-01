@@ -1,38 +1,51 @@
 {
-    "name": "barriga-herbs",
-    "version": "1.0.0",
-    "description": "implementação da api barrigarest em herbsjs",
-    "main": "src/index.js",
-    "scripts": {
-      "start": "node src/index.js",
-      "start:dev": "nodemon src/index.js",
-      "lint": "npx eslint \"**/*.{js,jsx}\" --quiet",
-      "lint:fix": "npx eslint \"**/*.{js,jsx}\" --fix",
-      "knex:make": "npx knex --knexfile knexFile.js migrate:make",
-      "knex:migrate": "npx knex --knexfile knexFile.js migrate:latest",
-      "knex:rollback": "npx knex --knexfile knexFile.js migrate:rollback",
-      "knex:makeSeeds": "npx knex --knexfile knexFile.js seed:make",
-      "knex:runSeeds": "npx knex --knexfile knexFile.js seed:run",
-      "test": "npm run spec",
-      "spec": "herbs spec"
-    },
-    "keywords": ["herbs"],
-    "author": "vitoraraujo",
-    "license": "MIT",
-    "dependencies": {
-      "@herbsjs/herbs": "^1.6.2",
-      "@herbsjs/herbarium": "^1.4.0",
-      "@herbsjs/herbsshelf": "^4.0.1",
-      "dotenv": "^16.0.1",
-      "deepmerge": "^4.2.2",
-      "nodemon": "^2.0.19",
-      "mocha": "^10.0.0",
-      "lodash.camelcase": "^4.3.0",
-      "sugar-env": "^1.5.14",
-      "@herbsjs/herbs2knex": "^1.5.7",
-      "sqlite3": "^5.0.11",
-      "express": "^4.18.1",
-      "cors": "^2.8.5",
-      "@herbsjs/herbs2rest": "^3.2.1"
-    }
+  "name": "barriga-herbs",
+  "version": "1.0.0",
+  "description": "implementação da api barrigarest em herbsjs",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "start:dev": "nodemon src/index.js",
+    "lint": "npx eslint \"**/*.{js,jsx}\" --quiet",
+    "lint:fix": "npx eslint \"**/*.{js,jsx}\" --fix",
+    "knex:make": "npx knex --knexfile knexFile.js migrate:make",
+    "knex:migrate": "npx knex --knexfile knexFile.js migrate:latest",
+    "knex:rollback": "npx knex --knexfile knexFile.js migrate:rollback",
+    "knex:makeSeeds": "npx knex --knexfile knexFile.js seed:make",
+    "knex:runSeeds": "npx knex --knexfile knexFile.js seed:run",
+    "test": "npm run spec",
+    "spec": "herbs spec"
+  },
+  "keywords": [
+    "herbs"
+  ],
+  "author": "vitorgamer58",
+  "license": "MIT",
+  "dependencies": {
+    "@herbsjs/herbarium": "^1.5.0",
+    "@herbsjs/herbs": "^2.0.0",
+    "@herbsjs/herbs2knex": "^2.1.1",
+    "@herbsjs/herbs2rest": "^4.1.1",
+    "@herbsjs/herbsshelf": "^5.0.1",
+    "bcrypt": "^5.1.0",
+    "chai": "^4.3.7",
+    "cors": "^2.8.5",
+    "deepmerge": "^4.2.2",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jwt-simple": "^0.5.6",
+    "knex": "^2.4.2",
+    "lodash.camelcase": "^4.3.0",
+    "mocha": "^10.0.0",
+    "nodemon": "^2.0.19",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1",
+    "sqlite3": "^5.0.11",
+    "sugar-env": "^1.5.14"
+  },
+  "devDependencies": {
+    "eslint": "^8.39.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5"
+  }
 }

@@ -1,8 +1,7 @@
 const { entity, id, field } = require('@herbsjs/herbs');
 const { herbarium } = require('@herbsjs/herbarium');
 
-const User = entity('User', {
-  id: id(String),
+const RegisterRequest = entity('RegisterRequest', {
   name: field(String, {
     validation: { presence: true }
   }),
@@ -14,4 +13,4 @@ const User = entity('User', {
   })
 });
 
-module.exports = herbarium.entities.add(User, 'User').entity;
+module.exports = herbarium.entities.add(RegisterRequest, 'RegisterRequest').entity;

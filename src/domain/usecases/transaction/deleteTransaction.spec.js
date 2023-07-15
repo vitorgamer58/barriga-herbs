@@ -1,15 +1,12 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable max-classes-per-file */
 const assert = require('assert');
-const {
-  spec, scenario, given, check, samples
-} = require('@herbsjs/herbs').specs;
+const { spec, scenario, given, check, samples } = require('@herbsjs/herbs').specs;
 const { herbarium } = require('@herbsjs/herbarium');
 const Transaction = require('../../entities/transaction');
 const deleteTransaction = require('./deleteTransaction');
 
 const deleteTransactionSpec = spec({
-
   usecase: deleteTransaction,
 
   'Delete transaction if exists': scenario({
@@ -20,7 +17,9 @@ const deleteTransactionSpec = spec({
       user: { hasAccess: true },
       injection: {
         TransactionRepository: class TransactionRepository {
-          async delete(entity) { return true; }
+          async delete(entity) {
+            return true;
+          }
 
           async getTransactionByIdAndUserId(id, userId) {
             return [{ id, userId }];
@@ -38,7 +37,6 @@ const deleteTransactionSpec = spec({
     'Must confirm deletion': check((ctx) => {
       assert.ok(ctx.response.ok === true);
     })
-
   }),
 
   'Do not delete transaction if it does not exist': scenario({
@@ -49,7 +47,9 @@ const deleteTransactionSpec = spec({
       user: { hasAccess: true },
       injection: {
         TransactionRepository: class TransactionRepository {
-          async delete(entity) { return true; }
+          async delete(entity) {
+            return true;
+          }
 
           async getTransactionByIdAndUserId(id, userId) {
             return [];
@@ -69,5 +69,4 @@ const deleteTransactionSpec = spec({
 
 module.exports = herbarium.specs
   .add(deleteTransactionSpec, 'DeleteTransactionSpec')
-  .metadata({ usecase: 'DeleteTransaction' })
-  .spec;
+  .metadata({ usecase: 'DeleteTransaction' }).spec;

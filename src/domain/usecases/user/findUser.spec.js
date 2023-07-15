@@ -2,14 +2,11 @@
 /* eslint-disable max-classes-per-file */
 const { herbarium } = require('@herbsjs/herbarium');
 const assert = require('assert');
-const {
-  spec, scenario, given, check, samples
-} = require('@herbsjs/herbs').specs;
+const { spec, scenario, given, check, samples } = require('@herbsjs/herbs').specs;
 const User = require('../../entities/user');
 const findUser = require('./findUser');
 
 const findUserSpec = spec({
-
   usecase: findUser,
 
   'Find a user when it exists': scenario({
@@ -27,7 +24,7 @@ const findUserSpec = spec({
               name: 'a text',
               passwd: 'a text'
             };
-            return ([User.fromJSON(fakeUser)]);
+            return [User.fromJSON(fakeUser)];
           }
         }
       }
@@ -40,7 +37,6 @@ const findUserSpec = spec({
     'Must return a valid user': check((ctx) => {
       assert.strictEqual(ctx.response.ok.isValid(), true);
     })
-
   }),
 
   'Do not find a user when it does not exist': scenario({
@@ -51,7 +47,9 @@ const findUserSpec = spec({
       user: { hasAccess: true },
       injection: {
         UserRepository: class UserRepository {
-          async findByID(id) { return []; }
+          async findByID(id) {
+            return [];
+          }
         }
       }
     }),
@@ -63,7 +61,4 @@ const findUserSpec = spec({
   })
 });
 
-module.exports = herbarium.specs
-  .add(findUserSpec, 'FindUserSpec')
-  .metadata({ usecase: 'FindUser' })
-  .spec;
+module.exports = herbarium.specs.add(findUserSpec, 'FindUserSpec').metadata({ usecase: 'FindUser' }).spec;

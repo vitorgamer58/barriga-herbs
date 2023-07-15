@@ -1,14 +1,11 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable max-classes-per-file */
 const assert = require('assert');
-const {
-  spec, scenario, given, check, samples
-} = require('@herbsjs/herbs').specs;
+const { spec, scenario, given, check, samples } = require('@herbsjs/herbs').specs;
 const { herbarium } = require('@herbsjs/herbarium');
 const createTransaction = require('./createTransaction');
 
 const createTransactionSpec = spec({
-
   usecase: createTransaction,
 
   'Ensure Correct Transaction Amount Sign': scenario({
@@ -23,20 +20,23 @@ const createTransactionSpec = spec({
       user: { id: 5 },
       injection: {
         TransactionRepository: class TransactionRepository {
-          async insert(transaction) { return (transaction); }
+          async insert(transaction) {
+            return transaction;
+          }
         },
         findAllAccountsUseCase() {
           return {
             authorize: () => Promise.resolve(),
-            run: () => Promise.resolve(
-              {
-                ok: [{
-                  id: '999',
-                  user_id: 5
-                }],
+            run: () =>
+              Promise.resolve({
+                ok: [
+                  {
+                    id: '999',
+                    user_id: 5
+                  }
+                ],
                 isErr: false
-              }
-            )
+              })
           };
         }
       }
@@ -60,20 +60,23 @@ const createTransactionSpec = spec({
       user: { id: 7 },
       injection: {
         TransactionRepository: class TransactionRepository {
-          async insert(transaction) { return (transaction); }
+          async insert(transaction) {
+            return transaction;
+          }
         },
         findAllAccountsUseCase() {
           return {
             authorize: () => Promise.resolve(),
-            run: () => Promise.resolve(
-              {
-                ok: [{
-                  id: '524',
-                  user_id: 7
-                }],
+            run: () =>
+              Promise.resolve({
+                ok: [
+                  {
+                    id: '524',
+                    user_id: 7
+                  }
+                ],
                 isErr: false
-              }
-            )
+              })
           };
         }
       }
@@ -88,5 +91,4 @@ const createTransactionSpec = spec({
 
 module.exports = herbarium.specs
   .add(createTransactionSpec, 'CreateTransactionSpec')
-  .metadata({ usecase: 'CreateTransaction' })
-  .spec;
+  .metadata({ usecase: 'CreateTransaction' }).spec;

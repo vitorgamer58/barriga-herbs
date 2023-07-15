@@ -15,5 +15,4 @@ class AccountRepository extends Repository {
 
 module.exports = herbarium.repositories
   .add(AccountRepository, 'AccountRepository')
-  .metadata({ entity: Account })
-  .repository;
+  .metadata({ entity: Account }).repository;

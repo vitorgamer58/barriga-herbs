@@ -1,14 +1,11 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable max-classes-per-file */
 const assert = require('assert');
-const {
-  spec, scenario, given, check, samples
-} = require('@herbsjs/herbs').specs;
+const { spec, scenario, given, check, samples } = require('@herbsjs/herbs').specs;
 const { herbarium } = require('@herbsjs/herbarium');
 const createAccount = require('./createAccount');
 
 const createAccountSpec = spec({
-
   usecase: createAccount,
 
   'Create a new account when it is valid': scenario({
@@ -19,7 +16,9 @@ const createAccountSpec = spec({
       user: { id: '5' },
       injection: {
         AccountRepository: class AccountRepository {
-          async insert(account) { return (account); }
+          async insert(account) {
+            return account;
+          }
         }
       }
     }),
@@ -35,7 +34,6 @@ const createAccountSpec = spec({
       assert.strictEqual(ctx.response.ok.isValid(), true);
       // TODO: check if it is really a account
     })
-
   }),
 
   'Do not create a new account when it is invalid': scenario({
@@ -47,7 +45,9 @@ const createAccountSpec = spec({
       user: { hasAccess: true },
       injection: {
         AccountRepository: class AccountRepository {
-          async insert(account) { return (account); }
+          async insert(account) {
+            return account;
+          }
         }
       }
     }),
@@ -55,11 +55,9 @@ const createAccountSpec = spec({
     'Must return an error': check((ctx) => {
       assert.ok(ctx.response.isErr);
     })
-
   })
 });
 
 module.exports = herbarium.specs
   .add(createAccountSpec, 'CreateAccountSpec')
-  .metadata({ usecase: 'CreateAccount' })
-  .spec;
+  .metadata({ usecase: 'CreateAccount' }).spec;

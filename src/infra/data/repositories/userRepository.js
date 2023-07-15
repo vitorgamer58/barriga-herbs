@@ -13,7 +13,4 @@ class UserRepository extends Repository {
   }
 }
 
-module.exports = herbarium.repositories
-  .add(UserRepository, 'UserRepository')
-  .metadata({ entity: User })
-  .repository;
+module.exports = herbarium.repositories.add(UserRepository, 'UserRepository').metadata({ entity: User }).repository;

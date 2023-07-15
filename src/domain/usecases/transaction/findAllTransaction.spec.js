@@ -2,15 +2,12 @@
 /* eslint-disable max-classes-per-file */
 
 const assert = require('assert');
-const {
-  spec, scenario, given, check, samples
-} = require('@herbsjs/herbs').specs;
+const { spec, scenario, given, check, samples } = require('@herbsjs/herbs').specs;
 const { herbarium } = require('@herbsjs/herbarium');
 const Transaction = require('../../entities/transaction');
 const findAllTransaction = require('./findAllTransaction');
 
 const findAllTransactionSpec = spec({
-
   usecase: findAllTransaction,
 
   'Find all transactions': scenario({
@@ -28,7 +25,7 @@ const findAllTransactionSpec = spec({
               type: 'a text',
               status: true
             };
-            return ([Transaction.fromJSON(fakeTransaction)]);
+            return [Transaction.fromJSON(fakeTransaction)];
           }
         }
       }
@@ -42,10 +39,8 @@ const findAllTransactionSpec = spec({
       assert.strictEqual(ctx.response.ok.length, 1);
     })
   })
-
 });
 
 module.exports = herbarium.specs
   .add(findAllTransactionSpec, 'FindAllTransactionSpec')
-  .metadata({ usecase: 'FindAllTransaction' })
-  .spec;
+  .metadata({ usecase: 'FindAllTransaction' }).spec;

@@ -1,15 +1,12 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable max-classes-per-file */
 const assert = require('assert');
-const {
-  spec, scenario, given, check, samples
-} = require('@herbsjs/herbs').specs;
+const { spec, scenario, given, check, samples } = require('@herbsjs/herbs').specs;
 const { herbarium } = require('@herbsjs/herbarium');
 const Account = require('../../entities/account');
 const deleteAccount = require('./deleteAccount');
 
 const deleteAccountSpec = spec({
-
   usecase: deleteAccount,
 
   'Delete account if exists': scenario({
@@ -20,9 +17,13 @@ const deleteAccountSpec = spec({
       user: { id: '1' },
       injection: {
         AccountRepository: class AccountRepository {
-          async delete(entity) { return true; }
+          async delete(entity) {
+            return true;
+          }
 
-          async find(where) { return [{ id: '1' }]; }
+          async find(where) {
+            return [{ id: '1' }];
+          }
         }
       }
     }),
@@ -36,7 +37,6 @@ const deleteAccountSpec = spec({
     'Must confirm deletion': check((ctx) => {
       assert.ok(ctx.response.ok === true);
     })
-
   }),
 
   'Do not delete account if it does not exist': scenario({
@@ -47,7 +47,9 @@ const deleteAccountSpec = spec({
       user: { id: '1' },
       injection: {
         AccountRepository: class AccountRepository {
-          async find(_) { return []; }
+          async find(_) {
+            return [];
+          }
         }
       }
     }),
@@ -63,5 +65,4 @@ const deleteAccountSpec = spec({
 
 module.exports = herbarium.specs
   .add(deleteAccountSpec, 'DeleteAccountSpec')
-  .metadata({ usecase: 'DeleteAccount' })
-  .spec;
+  .metadata({ usecase: 'DeleteAccount' }).spec;

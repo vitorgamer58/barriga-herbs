@@ -2,15 +2,12 @@
 /* eslint-disable max-classes-per-file */
 
 const assert = require('assert');
-const {
-  spec, scenario, given, check, samples
-} = require('@herbsjs/herbs').specs;
+const { spec, scenario, given, check, samples } = require('@herbsjs/herbs').specs;
 const { herbarium } = require('@herbsjs/herbarium');
 const Transaction = require('../../entities/transaction');
 const updateTransaction = require('./updateTransaction');
 
 const updateTransactionSpec = spec({
-
   usecase: updateTransaction,
   'Update a existing transaction when it is valid': scenario({
     'Given a valid transaction': given({
@@ -39,10 +36,12 @@ const updateTransactionSpec = spec({
               type: 'O',
               status: false
             };
-            return ([Transaction.fromJSON(fakeTransaction)]);
+            return [Transaction.fromJSON(fakeTransaction)];
           }
 
-          async update(transaction) { return transaction; }
+          async update(transaction) {
+            return transaction;
+          }
         }
       }
     })),
@@ -54,7 +53,6 @@ const updateTransactionSpec = spec({
     'Must confirm update': check((ctx) => {
       assert.ok(ctx.response.ok.status === true);
     })
-
   }),
 
   'Do not update a transaction when it is invalid': scenario({
@@ -75,7 +73,6 @@ const updateTransactionSpec = spec({
     'Must return an error': check((ctx) => {
       assert.ok(ctx.response.isErr);
     })
-
   }),
 
   'Do not update transaction if it does not exist': scenario({
@@ -91,7 +88,9 @@ const updateTransactionSpec = spec({
       user: { id: '1' },
       injection: {
         TransactionRepository: class TransactionRepository {
-          async getTransactionByIdAndUserId(_) { return []; }
+          async getTransactionByIdAndUserId(_) {
+            return [];
+          }
         }
       }
     }),
@@ -105,5 +104,4 @@ const updateTransactionSpec = spec({
 
 module.exports = herbarium.specs
   .add(updateTransactionSpec, 'UpdateTransactionSpec')
-  .metadata({ usecase: 'UpdateTransaction' })
-  .spec;
+  .metadata({ usecase: 'UpdateTransaction' }).spec;

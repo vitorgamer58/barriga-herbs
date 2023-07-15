@@ -55,5 +55,4 @@ class TransactionRepository extends Repository {
 
 module.exports = herbarium.repositories
   .add(TransactionRepository, 'TransactionRepository')
-  .metadata({ entity: Transaction })
-  .repository;
+  .metadata({ entity: Transaction }).repository;

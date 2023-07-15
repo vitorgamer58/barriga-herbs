@@ -2,14 +2,11 @@
 /* eslint-disable max-classes-per-file */
 const assert = require('assert');
 const { expect } = require('chai');
-const {
-  spec, scenario, given, check, samples
-} = require('@herbsjs/herbs').specs;
+const { spec, scenario, given, check, samples } = require('@herbsjs/herbs').specs;
 const { herbarium } = require('@herbsjs/herbarium');
 const createUser = require('./register');
 
 const createUserSpec = spec({
-
   usecase: createUser,
 
   'Create a new user when it is valid': scenario({
@@ -21,7 +18,9 @@ const createUserSpec = spec({
       },
       injection: {
         UserRepository: class UserRepository {
-          async insert(user) { return (user); }
+          async insert(user) {
+            return user;
+          }
         }
       }
     }),
@@ -33,10 +32,8 @@ const createUserSpec = spec({
     }),
 
     'Must return a valid user': check((ctx) => {
-
       // TODO: check if it is really a user
     })
-
   }),
 
   'Do not create a new user when it is invalid': scenario({
@@ -48,7 +45,9 @@ const createUserSpec = spec({
       },
       injection: {
         UserRepository: class UserRepository {
-          async insert(user) { return (user); }
+          async insert(user) {
+            return user;
+          }
         }
       }
     }),
@@ -59,11 +58,7 @@ const createUserSpec = spec({
       assert.ok(ctx.response.isErr);
       // assert.ok(ret.isInvalidEntityError)
     })
-
   })
 });
 
-module.exports = herbarium.specs
-  .add(createUserSpec, 'CreateUserSpec')
-  .metadata({ usecase: 'CreateUser' })
-  .spec;
+module.exports = herbarium.specs.add(createUserSpec, 'CreateUserSpec').metadata({ usecase: 'CreateUser' }).spec;

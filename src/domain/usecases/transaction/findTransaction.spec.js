@@ -2,15 +2,12 @@
 /* eslint-disable max-classes-per-file */
 
 const assert = require('assert');
-const {
-  spec, scenario, given, check, samples
-} = require('@herbsjs/herbs').specs;
+const { spec, scenario, given, check, samples } = require('@herbsjs/herbs').specs;
 const { herbarium } = require('@herbsjs/herbarium');
 const Transaction = require('../../entities/transaction');
 const findTransaction = require('./findTransaction');
 
 const findTransactionSpec = spec({
-
   usecase: findTransaction,
 
   'Find a transaction when it exists': scenario({
@@ -30,7 +27,7 @@ const findTransactionSpec = spec({
               type: 'I',
               status: true
             };
-            return ([Transaction.fromJSON(fakeTransaction)]);
+            return [Transaction.fromJSON(fakeTransaction)];
           }
         }
       }
@@ -45,7 +42,6 @@ const findTransactionSpec = spec({
     'Must return a valid transaction': check((ctx) => {
       assert.strictEqual(ctx.response.ok.isValid(), true);
     })
-
   }),
 
   'Do not find a transaction when it does not exist': scenario({
@@ -56,7 +52,9 @@ const findTransactionSpec = spec({
       user: { id: '1' },
       injection: {
         TransactionRepository: class TransactionRepository {
-          async findByID(id) { return []; }
+          async findByID(id) {
+            return [];
+          }
         }
       }
     }),
@@ -69,5 +67,4 @@ const findTransactionSpec = spec({
 
 module.exports = herbarium.specs
   .add(findTransactionSpec, 'FindTransactionSpec')
-  .metadata({ usecase: 'FindTransaction' })
-  .spec;
+  .metadata({ usecase: 'FindTransaction' }).spec;

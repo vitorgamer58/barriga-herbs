@@ -1,14 +1,11 @@
 /* eslint-disable class-methods-use-this */
 const assert = require('assert');
-const {
-  spec, scenario, given, check, samples
-} = require('@herbsjs/herbs').specs;
+const { spec, scenario, given, check, samples } = require('@herbsjs/herbs').specs;
 const { herbarium } = require('@herbsjs/herbarium');
 const Account = require('../../entities/account');
 const findAllAccount = require('./findAllAccount');
 
 const findAllAccountSpec = spec({
-
   usecase: findAllAccount,
 
   'Find all accounts': scenario({
@@ -23,7 +20,7 @@ const findAllAccountSpec = spec({
               name: 'a text',
               user_id: 'a text'
             };
-            return ([fakeAccount]);
+            return [fakeAccount];
           }
         }
       }
@@ -39,12 +36,9 @@ const findAllAccountSpec = spec({
     'Must return a list of accounts': check((ctx) => {
       assert.strictEqual(ctx.response.ok.length, 1);
     })
-
   })
-
 });
 
 module.exports = herbarium.specs
   .add(findAllAccountSpec, 'FindAllAccountSpec')
-  .metadata({ usecase: 'FindAllAccount' })
-  .spec;
+  .metadata({ usecase: 'FindAllAccount' }).spec;

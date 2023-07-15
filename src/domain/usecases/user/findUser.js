@@ -38,14 +38,16 @@ const findUser = (injection) => usecase('Find a User', {
     'Then: Find by ID and return the User': step(async (ctx) => {
       const { id } = ctx.req;
       const repo = new ctx.di.UserRepository(injection);
+
       const [user] = await repo.findByID(id);
+
       if (!user) {
         return Err.notFound({
           message: `User entity not found by ID: ${id}`,
           payload: { entity: 'User', id }
         });
       }
-      // ctx.ret is the return value of a use case
+
       return Ok(ctx.ret = user);
     }),
 

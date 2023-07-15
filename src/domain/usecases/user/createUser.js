@@ -19,7 +19,6 @@ const createUser = (injection) => usecase('Create User', {
     ctx.data = {};
   },
 
-  // Step description and function
   'Check if the User is valid': step((ctx) => {
     ctx.data.user = User.fromJSON(ctx.req);
     ctx.data.user.id = Math.floor(Math.random() * 100000).toString();
@@ -32,14 +31,12 @@ const createUser = (injection) => usecase('Create User', {
       });
     }
 
-    // returning Ok continues to the next step. Err stops the use case execution.
     return Ok();
   }),
 
   'Save the User': step(async (ctx) => {
     const repo = new ctx.di.UserRepository(injection);
     const { user } = ctx.data;
-    // ctx.ret is the return value of a use case
     return (ctx.ret = await repo.insert(user));
   })
 });

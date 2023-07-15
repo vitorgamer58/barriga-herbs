@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable max-classes-per-file */
 const assert = require('assert');
 const {
@@ -14,14 +15,14 @@ const deleteAccountSpec = spec({
   'Delete account if exists': scenario({
     'Given an existing account': given({
       request: {
-        id: 'a text'
+        id: '50'
       },
-      user: { hasAccess: true },
+      user: { id: '1' },
       injection: {
         AccountRepository: class AccountRepository {
-          static async delete(entity) { return true; }
+          async delete(entity) { return true; }
 
-          static async findByID(id) { return [Account.fromJSON({ id })]; }
+          async find(where) { return [{ id: '1' }]; }
         }
       }
     }),
@@ -43,10 +44,10 @@ const deleteAccountSpec = spec({
       request: {
         id: 'a text'
       },
-      user: { hasAccess: true },
+      user: { id: '1' },
       injection: {
         AccountRepository: class AccountRepository {
-          static async findByID(id) { return []; }
+          async find(_) { return []; }
         }
       }
     }),

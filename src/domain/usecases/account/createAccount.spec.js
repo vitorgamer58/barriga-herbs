@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable max-classes-per-file */
 const assert = require('assert');
 const {
@@ -13,13 +14,12 @@ const createAccountSpec = spec({
   'Create a new account when it is valid': scenario({
     'Given a valid account': given({
       request: {
-        name: 'a text',
-        user_id: 'a text'
+        name: 'Bank'
       },
-      user: { hasAccess: true },
+      user: { id: '5' },
       injection: {
         AccountRepository: class AccountRepository {
-          static async insert(account) { return (account); }
+          async insert(account) { return (account); }
         }
       }
     }),
@@ -27,6 +27,7 @@ const createAccountSpec = spec({
     // when: default when for use case
 
     'Must run without errors': check((ctx) => {
+      console.log(JSON.stringify(ctx.response.err));
       assert.ok(ctx.response.isOk);
     }),
 
@@ -45,17 +46,14 @@ const createAccountSpec = spec({
       },
       user: { hasAccess: true },
       injection: {
-        accountRepository: new (class AccountRepository {
-          static async insert(account) { return (account); }
-        })()
+        AccountRepository: class AccountRepository {
+          async insert(account) { return (account); }
+        }
       }
     }),
 
-    // when: default when for use case
-
     'Must return an error': check((ctx) => {
       assert.ok(ctx.response.isErr);
-      // assert.ok(ret.isInvalidEntityError)
     })
 
   })

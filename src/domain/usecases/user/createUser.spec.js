@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable max-classes-per-file */
 const assert = require('assert');
 const {
@@ -13,19 +14,17 @@ const createUserSpec = spec({
   'Create a new user when it is valid': scenario({
     'Given a valid user': given({
       request: {
-        name: 'a text',
-        email: 'a text',
-        passwd: 'a text'
+        name: 'Jhon Doe',
+        email: 'abc@abc.com',
+        passwd: '123456'
       },
-      user: { hasAccess: true },
+      user: { id: '1' },
       injection: {
         UserRepository: class UserRepository {
-          static async insert(user) { return (user); }
+          async insert(user) { return (user); }
         }
       }
     }),
-
-    // when: default when for use case
 
     'Must run without errors': check((ctx) => {
       assert.ok(ctx.response.isOk);
@@ -33,7 +32,6 @@ const createUserSpec = spec({
 
     'Must return a valid user': check((ctx) => {
       assert.strictEqual(ctx.response.ok.isValid(), true);
-      // TODO: check if it is really a user
     })
 
   }),

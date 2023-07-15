@@ -60,7 +60,7 @@ const createTransaction = (injection) => usecase('Create Transaction', {
       await usecaseInstance.authorize(ctx.user);
       const ucResponse = await usecaseInstance.run();
 
-      if (ucResponse.err) return Err('Internal server error');
+      if (ucResponse.isErr) return Err('Internal server error');
 
       const userAccounts = ucResponse.ok;
 

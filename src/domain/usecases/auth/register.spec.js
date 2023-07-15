@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable max-classes-per-file */
 const assert = require('assert');
 const { expect } = require('chai');
@@ -20,7 +21,7 @@ const createUserSpec = spec({
       },
       injection: {
         UserRepository: class UserRepository {
-          static async insert(user) { return (user); }
+          async insert(user) { return (user); }
         }
       }
     }),
@@ -46,9 +47,9 @@ const createUserSpec = spec({
         passwd: true
       },
       injection: {
-        userRepository: new (class UserRepository {
-          static async insert(user) { return (user); }
-        })()
+        UserRepository: class UserRepository {
+          async insert(user) { return (user); }
+        }
       }
     }),
 

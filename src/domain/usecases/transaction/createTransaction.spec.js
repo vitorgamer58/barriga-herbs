@@ -1,72 +1,92 @@
-const createTransaction = require('./createTransaction')
-const assert = require('assert')
-const { spec, scenario, given, check, samples } = require('@herbsjs/herbs').specs
-const { herbarium } = require('@herbsjs/herbarium')
+/* eslint-disable class-methods-use-this */
+/* eslint-disable max-classes-per-file */
+const assert = require('assert');
+const {
+  spec, scenario, given, check, samples
+} = require('@herbsjs/herbs').specs;
+const { herbarium } = require('@herbsjs/herbarium');
+const createTransaction = require('./createTransaction');
 
 const createTransactionSpec = spec({
 
-    usecase: createTransaction,
-  
-    'Create a new transaction when it is valid': scenario({
-      'Given a valid transaction': given({
-        request: {
-            description: 'a text',
+  usecase: createTransaction,
+
+  'Ensure Correct Transaction Amount Sign': scenario({
+    'Given a transaction with incorrect amount sign': given({
+      request: {
+        description: 'Income',
+        ammount: -99,
+        acc_id: '999',
+        type: 'I',
+        status: true
+      },
+      user: { id: 5 },
+      injection: {
+        TransactionRepository: class TransactionRepository {
+          async insert(transaction) { return (transaction); }
+        },
+        findAllAccountsUseCase() {
+          return {
+            authorize: () => Promise.resolve(),
+            run: () => Promise.resolve(
+              {
+                ok: [{
+                  id: '999',
+                  user_id: 5
+                }],
+                isErr: false
+              }
+            )
+          };
+        }
+      }
+    }),
+
+    'Must return a transaction with the corrected amount sign': check((ctx) => {
+      assert.ok(ctx.response.isOk);
+      assert.strictEqual(ctx.response.ok.ammount, 99);
+    })
+  }),
+
+  'Check if user is owner of transaction account_id': scenario({
+    'Given a user who is not the owner of the transaction account_id': given({
+      request: {
+        description: 'a text',
         amount: 99,
-        acc_id: 'a text',
-        type: 'a text',
+        acc_id: '999',
+        type: 'I',
         status: true
+      },
+      user: { id: 7 },
+      injection: {
+        TransactionRepository: class TransactionRepository {
+          async insert(transaction) { return (transaction); }
         },
-        user: { hasAccess: true },
-        injection: {
-            TransactionRepository: class TransactionRepository {
-              async insert(transaction) { return (transaction) }
-            }
-        },
-      }),
-
-      // when: default when for use case
-
-      'Must run without errors': check((ctx) => {
-        assert.ok(ctx.response.isOk)  
-      }),
-
-      'Must return a valid transaction': check((ctx) => {
-        assert.strictEqual(ctx.response.ok.isValid(), true)
-        // TODO: check if it is really a transaction
-      })
-
+        findAllAccountsUseCase() {
+          return {
+            authorize: () => Promise.resolve(),
+            run: () => Promise.resolve(
+              {
+                ok: [{
+                  id: '524',
+                  user_id: 7
+                }],
+                isErr: false
+              }
+            )
+          };
+        }
+      }
     }),
 
-    'Do not create a new transaction when it is invalid': scenario({
-      'Given a invalid transaction': given({
-        request: {
-          description: true,
-        amount: true,
-        date: true,
-        acc_id: true,
-        type: true,
-        status: true
-        },
-        user: { hasAccess: true },
-        injection: {
-            transactionRepository: new ( class TransactionRepository {
-              async insert(transaction) { return (transaction) }
-            })
-        },
-      }),
-
-      // when: default when for use case
-
-      'Must return an error': check((ctx) => {
-        assert.ok(ctx.response.isErr)  
-        // assert.ok(ret.isInvalidEntityError)
-      }),
-
-    }),
+    'Must return a permission denied error': check((ctx) => {
+      assert.ok(ctx.response.isErr);
+      // assert.ok(ret.isPermissionDeniedError)
+    })
   })
-  
-module.exports =
-  herbarium.specs
-    .add(createTransactionSpec, 'CreateTransactionSpec')
-    .metadata({ usecase: 'CreateTransaction' })
-    .spec
+});
+
+module.exports = herbarium.specs
+  .add(createTransactionSpec, 'CreateTransactionSpec')
+  .metadata({ usecase: 'CreateTransaction' })
+  .spec;

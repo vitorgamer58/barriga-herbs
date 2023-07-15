@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable max-classes-per-file */
 const { herbarium } = require('@herbsjs/herbarium');
 const assert = require('assert');
@@ -19,20 +20,18 @@ const findUserSpec = spec({
       user: { hasAccess: true },
       injection: {
         UserRepository: class UserRepository {
-          static async findByID(id) {
+          async findByID(id) {
             const fakeUser = {
               id: 'a text',
-              nickname: 'a text',
-              registrationNumber: 99,
-              password: 'a text'
+              email: 'abc@abc.com',
+              name: 'a text',
+              passwd: 'a text'
             };
             return ([User.fromJSON(fakeUser)]);
           }
         }
       }
     }),
-
-    // when: default when for use case
 
     'Must run without errors': check((ctx) => {
       assert.ok(ctx.response.isOk);
@@ -52,12 +51,10 @@ const findUserSpec = spec({
       user: { hasAccess: true },
       injection: {
         UserRepository: class UserRepository {
-          static async findByID(id) { return []; }
+          async findByID(id) { return []; }
         }
       }
     }),
-
-    // when: default when for use case
 
     'Must return an error': check((ctx) => {
       assert.ok(ctx.response.isErr);

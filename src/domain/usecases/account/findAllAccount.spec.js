@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 const assert = require('assert');
 const {
   spec, scenario, given, check, samples
@@ -13,16 +14,16 @@ const findAllAccountSpec = spec({
   'Find all accounts': scenario({
     'Given an existing account': given({
       request: { limit: 0, offset: 0 },
-      user: { hasAccess: true },
+      user: { id: '1' },
       injection: {
         AccountRepository: class AccountRepository {
-          static async findAll(id) {
+          async find(id) {
             const fakeAccount = {
               id: 'a text',
               name: 'a text',
               user_id: 'a text'
             };
-            return ([Account.fromJSON(fakeAccount)]);
+            return ([fakeAccount]);
           }
         }
       }
@@ -31,6 +32,7 @@ const findAllAccountSpec = spec({
     // when: default when for use case
 
     'Must run without errors': check((ctx) => {
+      console.log(ctx.response.err);
       assert.ok(ctx.response.isOk);
     }),
 
